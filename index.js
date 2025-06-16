@@ -135,46 +135,75 @@
     La función debe imprimir la edad y la categoría de cada persona.
  */
 
-const edades = [12, 18, 22, 25, 85, 71, 23, 55, 29, 19, 17, 50, 'm', "sdfsdfsdfsdf"];
+// const edades = [12, 18, 22, 25, 85, 71, 23, 55, 29, 19, 17, 50, 'm', "sdfsdfsdfsdf"];
 
-const clasificarEdades = (lista) => {
-    for (let i = 0; i < lista.length; i++) {
-        let edad = lista[i];
+// const clasificarEdades = (lista) => {
+//     for (let i = 0; i < lista.length; i++) {
+//         let edad = lista[i];
 
-        // if (typeof edad !== "number" || !Number.isInteger(edad)) {
-        //     console.error(`Esto no es un numero ${edad}`)
-        //     continue;
-        // }
+//         // if (typeof edad !== "number" || !Number.isInteger(edad)) {
+//         //     console.error(`Esto no es un numero ${edad}`)
+//         //     continue;
+//         // }
 
-        //intentar convertir a numero
-        if(typeof edad === "string" && !isNaN(edad)){
-            edad = Number(edad)
-        }
+//         //intentar convertir a numero
+//         if(typeof edad === "string" && !isNaN(edad)){
+//             edad = Number(edad)
+//         }
 
-        // verificar que sea un numero valido
-        if(typeof edad !== "number" || isNaN(edad)){
-            console.error(`Esto no es un numero ${edad}`)
-            continue;
-        }
+//         // verificar que sea un numero valido
+//         if(typeof edad !== "number" || isNaN(edad)){
+//             console.error(`Esto no es un numero ${edad}`)
+//             continue;
+//         }
 
-        // Filtrar si es float
-        if(typeof edad === "number" && !Number.isInteger(edad)){
-            console.warn(`Edad ${edad} -> No es una Edad computable`);
-            continue;
-        }
+//         // Filtrar si es float
+//         if(typeof edad === "number" && !Number.isInteger(edad)){
+//             console.warn(`Edad ${edad} -> No es una Edad computable`);
+//             continue;
+//         }
 
-        if (edad < 18) {
-            console.log(`Edad ${edad} -> Menor de Edad`);
-        } else if (edad >= 18 && edad < 60) {
-            console.log(`Edad ${edad} -> Adulto`);
-        } else {
-            console.log(`Edad ${edad} -> Adulto Mayor`);
-        }
+//         if (edad < 18) {
+//             console.log(`Edad ${edad} -> Menor de Edad`);
+//         } else if (edad >= 18 && edad < 60) {
+//             console.log(`Edad ${edad} -> Adulto`);
+//         } else {
+//             console.log(`Edad ${edad} -> Adulto Mayor`);
+//         }
 
-    }
+//     }
+// }
+
+// clasificarEdades(edades)
+
+// const numeros = [12.0, 18.55, 22.98, '25', '85', 71, '23', "sdfsdfsdfsdf"];
+// clasificarEdades(numeros)
+
+// Objetos
+/**
+ * Tiene Atributos
+ * Tiene Metodos (funciones)
+ */
+
+const persona = {
+    nombre: "Alejandro",
+    edad: 49,
+    email: "alejandro@mail.com",
+    phone: "1155556666"
 }
 
-clasificarEdades(edades)
+const producto = {
+    nombre: "Harina",
+    precio: 1000.50,
+    stock: 500,
+    descripcion: "Harina 0000"
+}
 
-const numeros = [12.0, 18.55, 22.98, '25', '85', 71, '23', "sdfsdfsdfsdf"];
-clasificarEdades(numeros)
+console.log(persona)
+
+persona.nombre = "Santino",
+persona.edad = 20,
+persona.email ="santino@mail.com";
+persona.phone = 1122223333
+
+console.log(persona)
