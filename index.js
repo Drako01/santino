@@ -1,209 +1,151 @@
-// let numeroA = 1;
-// console.log(typeof numeroA)
-// const NUMERO_B = 2;
-// console.log( NUMERO_B)
-
-// numeroA = 6;
-// // NUMERO_B =3;
-// console.log(typeof numeroA)
-
-
-// numeroA = "Hola";
-// console.log(typeof numeroA)
-
-// const arrayLetras = [
-//     'a', 
-//     'b', 
-//     'c',
-//     's'
-// ];
-
-// arrayLetras.push('m', 'l')
-// // arrayLetras.pop()
-// console.log(arrayLetras)
-// const cantidadDeValores = arrayLetras.length
-
-// console.log(cantidadDeValores)
-
-// ///  Variable inicializada | Condicion          | Incremento (a cada vuelta le suma)
-// for (let i = 0; i < arrayLetras.length; i++){
-//     console.log("En el Indice: " + i + " esta el valor " + arrayLetras[i]);
-// }
-
-// console.log(arrayLetras[2])
-
-// let contador = 0;
-
-// for(let i = 0; i <= 100; i++){
-//     contador = i;
-//     console.log("mensaje Nro: " + contador)
-// }
-
-// const frutas = ["banana", "manzana", "pera", "anana"];
-
-// for(let i = 0; i < frutas.length; i++){
-//     console.log("Frutas: " + frutas[i]);
-// }
-// console.log(frutas.length)
-
-// frutas.push("kiwi")
-// frutas.shift() // Elimina el 1er Elemento
-// // for of
-// for(const fruta of frutas){
-//     console.log("Frutas: " + fruta);
-// }
-// console.log(frutas.length)
-
-// let indiceAEliminar = 3;
-
-// frutas.splice(indiceAEliminar, 1)
-
-// for(const fruta of frutas){
-//     console.log("Frutas: " + fruta);
-// }
-// console.log(frutas.length)
-
-// indiceAEliminar = 1;
-
-// frutas.splice(indiceAEliminar, 2)
-
-// for(const fruta of frutas){
-//     console.log("Frutas: " + fruta);
-// }
-// console.log(frutas.length)
-
-
-// Funciones
-// const frutas = ["banana", "manzana", "pera", "anana"];
-// for(const fruta of frutas){
-//     console.log("Frutas: " + fruta);
-// }
-
-// const libros = ["banana", "manzana", "pera", "anana"];
-// for(const libro of libros){
-//     console.log("Libros: " + libro);
-// }
-
-// function saludar(){
-//     console.log("Hola mundo");
-// }
-
-// saludar()
-// saludar()
-// saludar()
-// saludar()
-// saludar()
-
-// // funcion con parametros
-// function saludarConParametros(nombre){
-//     console.log("Hola " + nombre);
-// }
-// saludarConParametros("Santino")
-// saludarConParametros("Alejandro")
-
-// const frutas = ["banana", "manzana", "pera", "anana"];
-// const libros = ["señor de los anillos 1", "señor de los anillos 2", "señor de los anillos 3"];
-
-// // function recorrerArray(pendorchos, etiqueta = "Elemento") {
-// //     for (const pendorcho of pendorchos) {
-// //         console.log(`${etiqueta}: ${pendorcho}`);
-// //     }
-// // }
-
-// // Funcion flecha o arrow function
-// const recorrerArray = (pendorchos, etiqueta = "Elemento") => {
-//     for (const pendorcho of pendorchos) {
-//         console.log(`${etiqueta}: ${pendorcho}`);
-//     }
-// }
-// recorrerArray(frutas, "Fruta")
-// recorrerArray(libros, "Libro")
-
-// Ejercicio:
-
-/**
- * 💡 Ejercicio: Clasificar edades
-    Tenés un array con edades de personas. Creá una función que 
-    recorra el array, y según la edad, clasifique a cada persona como:
-
-    "Menor de edad" si tiene menos de 18 años
-
-    "Adulto" si tiene entre 18 y 59 años
-
-    "Adulto mayor" si tiene 60 o más
-
-    La función debe imprimir la edad y la categoría de cada persona.
- */
-
-// const edades = [12, 18, 22, 25, 85, 71, 23, 55, 29, 19, 17, 50, 'm', "sdfsdfsdfsdf"];
-
-// const clasificarEdades = (lista) => {
-//     for (let i = 0; i < lista.length; i++) {
-//         let edad = lista[i];
-
-//         // if (typeof edad !== "number" || !Number.isInteger(edad)) {
-//         //     console.error(`Esto no es un numero ${edad}`)
-//         //     continue;
-//         // }
-
-//         //intentar convertir a numero
-//         if(typeof edad === "string" && !isNaN(edad)){
-//             edad = Number(edad)
-//         }
-
-//         // verificar que sea un numero valido
-//         if(typeof edad !== "number" || isNaN(edad)){
-//             console.error(`Esto no es un numero ${edad}`)
-//             continue;
-//         }
-
-//         // Filtrar si es float
-//         if(typeof edad === "number" && !Number.isInteger(edad)){
-//             console.warn(`Edad ${edad} -> No es una Edad computable`);
-//             continue;
-//         }
-
-//         if (edad < 18) {
-//             console.log(`Edad ${edad} -> Menor de Edad`);
-//         } else if (edad >= 18 && edad < 60) {
-//             console.log(`Edad ${edad} -> Adulto`);
-//         } else {
-//             console.log(`Edad ${edad} -> Adulto Mayor`);
-//         }
-
-//     }
-// }
-
-// clasificarEdades(edades)
-
-// const numeros = [12.0, 18.55, 22.98, '25', '85', 71, '23', "sdfsdfsdfsdf"];
-// clasificarEdades(numeros)
-
-// Objetos
-/**
- * Tiene Atributos
- * Tiene Metodos (funciones)
- */
-
 const persona = {
+    // Atributos del Objeto
+    nombre: "Santino",
+    edad: 20,
+    vivo: true,
+    email: "santino@mail.com",
+
+    // Metodos del Objeto
+    saludar: function () {
+        if (this.vivo) {
+            console.log(`Hola, mi nombre es: ${this.nombre} y mi Email es: ${this.email}`);
+        } else {
+            console.warn(`Hola, ${this.nombre} esta Morido`);
+        }
+    }
+}
+
+const persona1 = {
+    // Atributos del Objeto
     nombre: "Alejandro",
     edad: 49,
+    vivo: true,
     email: "alejandro@mail.com",
-    phone: "1155556666"
+
+    // Metodos del Objeto
+    saludar: function () {
+        if (this.vivo) {
+            console.log(`Hola, mi nombre es: ${this.nombre} y mi Email es: ${this.email}`);
+        } else {
+            console.warn(`Hola, ${this.nombre} esta Morido`);
+        }
+    }
 }
 
-const producto = {
-    nombre: "Harina",
-    precio: 1000.50,
-    stock: 500,
-    descripcion: "Harina 0000"
+// console.log(persona)
+
+// persona.saludar();
+// persona.saludar();
+// persona1.saludar();
+// persona1.saludar();
+
+// Funcion constructora
+// function Persona(nombre, edad, vivo, email) {
+//     this.nombre = nombre;
+//     this.edad = parseInt(edad);
+//     this.vivo = vivo === "true";
+//     this.email = email;
+// }
+
+// Persona.prototype.saludar = function () {
+//     if (this.vivo) {
+//         console.log(`Hola, mi nombre es: ${this.nombre} y mi Email es: ${this.email}`);
+//     } else {
+//         console.warn(`Hola, ${this.nombre} esta Morido`);
+//     }
+// }
+
+// Crear una Instancia de Persona
+// const persona2 = new Persona("Santino", 20, true, "santino@mail.com");
+// const persona3 = new Persona("Alejandro", 49, true, "alejandro@mail.com");
+// const persona25 = new Persona("Alejandro 25", "49", "true", "alejandro@mail.com");
+// console.log(persona2)
+// console.log(persona25)
+// persona25.saludar();
+
+// const personas = [];
+
+
+
+// Crar una Persona usando la Clase Persona
+class Persona {
+    constructor(nombre, edad, vivo, email) {
+        this.nombre = nombre;
+        this.edad = parseInt(edad);
+        this.vivo = vivo === "true";
+        this.email = email;
+    }
+
+    saludar() {
+        if (this.vivo) {
+            console.log(`Hola, mi nombre es: ${this.nombre} y mi Email es: ${this.email}`);
+        } else {
+            console.warn(`Hola, ${this.nombre} esta Morido`);
+        }
+    }
+
+    dormir() {
+        console.log(`Hola, mi nombre es: ${this.nombre} y estoy Durmiendo`);
+    }
 }
 
-console.log(persona)
+// Aplicamos Herencia
+class Argentino extends Persona{ 
+    // Aplicamos Polimorfismo
+    dormir() {
+        console.log(`Hola, mi nombre es: ${this.nombre} y estoy Durmiendo desde Argentino`);
+    }
 
-persona.nombre = "Santino",
-persona.edad = 20,
-persona.email ="santino@mail.com";
-persona.phone = 1122223333
+    correr(){
+        console.log(`Hola, mi nombre es: ${this.nombre} y estoy Corriendo`);
+    }
+}
 
-console.log(persona)
+// Funcion para recuperar personas del LS
+function cargarPersonasDesdeElLS() {
+    const datos = localStorage.getItem("personas");
+    if (!datos) return [];
+    const datosParseados = JSON.parse(datos);
+    //Reconstruir instancias de Persona
+    return datosParseados.map(p => new Argentino(p.nombre, p.edad, String(p.vivo), p.email));
+}
+
+// Funcion para Guardar en el LS
+function guardarPersonasEnLS(personas) {
+    localStorage.setItem("personas", JSON.stringify(personas));
+}
+
+// const personas = cargarPersonasDesdeElLS();
+
+// let seguir = confirm("¿Queres agregar una nueva Persona?");
+
+// while (seguir) {
+//     const nombre = prompt("Ingrese un Nombre:");
+//     const edad = prompt("Ingrese la Edad:");
+//     const email = prompt("Ingrese el Email:");
+//     const vivo = prompt("¿Esta Vivo? (true/false)");
+
+//     const nuevaPersona = new Argentino(nombre, edad, vivo, email);
+//     personas.push(nuevaPersona);
+
+//     guardarPersonasEnLS(personas)
+
+//     seguir = confirm("¿Queres seguir cargando Personas?")
+// }
+
+const personas = [
+    new Persona("Santino", "20", "true", "mail@fsdfsdf.sdf"),
+    new Argentino("Alejandro", "49", "true", "masdasd@asasdasd.asd")
+]
+
+console.log("Personas Creadas: ", personas);
+
+personas.forEach(p => p.saludar());
+
+personas.forEach(p => p.dormir());
+
+personas.forEach(p => {
+    if(p instanceof Argentino){
+        p.correr()
+    }
+});
