@@ -1,11 +1,11 @@
-# Ejercicios Clase 02
+# 🧠 100 Ejercicios Básicos de JavaScript
 
-* Arrays (💠)
-* Objetos literales (🔹)
-* Clases (🧱)
-* Constructores tradicionales (🧰)
+Este documento contiene 100 ejercicios organizados por temática:
 
-Los agrupé por tipo y dificultad creciente. Están listos para resolver directamente en consola o editor.
+- 🔹 Objetos
+- 💠 Arrays
+- 🧰 Constructores
+- 🧱 Clases
 
 ---
 
