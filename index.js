@@ -1,151 +1,202 @@
-const persona = {
-    // Atributos del Objeto
-    nombre: "Santino",
-    edad: 20,
-    vivo: true,
-    email: "santino@mail.com",
+/**
+ * Problema: Sistema de Gestión de Alquiler de Vehículos
+    Descripción:
 
-    // Metodos del Objeto
-    saludar: function () {
-        if (this.vivo) {
-            console.log(`Hola, mi nombre es: ${this.nombre} y mi Email es: ${this.email}`);
-        } else {
-            console.warn(`Hola, ${this.nombre} esta Morido`);
-        }
-    }
-}
+    Imagina que estás desarrollando un simulador para gestionar el alquiler de vehículos en una agencia de alquiler 
+    de autos. En este simulador, cada vehículo tiene un nombre (marca y modelo), un precio de alquiler por día, y un 
+    estado de disponibilidad (disponible o alquilado). Debes permitir que el usuario realice las siguientes acciones:
 
-const persona1 = {
-    // Atributos del Objeto
-    nombre: "Alejandro",
-    edad: 49,
-    vivo: true,
-    email: "alejandro@mail.com",
+    Registrar un nuevo vehículo: Agregar un nuevo vehículo al sistema, especificando su nombre, precio de alquiler por 
+    día, y estado inicial como disponible.
+    Alquilar un vehículo: Cambiar el estado de un vehículo a "alquilado" si está disponible, y mostrar un mensaje de 
+    confirmación.
+    Devolver un vehículo: Cambiar el estado de un vehículo a "disponible" si está alquilado, y mostrar un mensaje de 
+    confirmación.
+    Mostrar la información del vehículo: Mostrar los detalles del vehículo (nombre, precio de alquiler por día, y 
+    estado actual).
+    Salir del programa: Finalizar el programa.
+    El programa debe seguir funcionando hasta que el usuario elija salir.
+ */
 
-    // Metodos del Objeto
-    saludar: function () {
-        if (this.vivo) {
-            console.log(`Hola, mi nombre es: ${this.nombre} y mi Email es: ${this.email}`);
-        } else {
-            console.warn(`Hola, ${this.nombre} esta Morido`);
-        }
-    }
-}
-
-// console.log(persona)
-
-// persona.saludar();
-// persona.saludar();
-// persona1.saludar();
-// persona1.saludar();
-
-// Funcion constructora
-// function Persona(nombre, edad, vivo, email) {
-//     this.nombre = nombre;
-//     this.edad = parseInt(edad);
-//     this.vivo = vivo === "true";
-//     this.email = email;
-// }
-
-// Persona.prototype.saludar = function () {
-//     if (this.vivo) {
-//         console.log(`Hola, mi nombre es: ${this.nombre} y mi Email es: ${this.email}`);
-//     } else {
-//         console.warn(`Hola, ${this.nombre} esta Morido`);
-//     }
-// }
-
-// Crear una Instancia de Persona
-// const persona2 = new Persona("Santino", 20, true, "santino@mail.com");
-// const persona3 = new Persona("Alejandro", 49, true, "alejandro@mail.com");
-// const persona25 = new Persona("Alejandro 25", "49", "true", "alejandro@mail.com");
-// console.log(persona2)
-// console.log(persona25)
-// persona25.saludar();
-
-// const personas = [];
-
-
-
-// Crar una Persona usando la Clase Persona
-class Persona {
-    constructor(nombre, edad, vivo, email) {
-        this.nombre = nombre;
-        this.edad = parseInt(edad);
-        this.vivo = vivo === "true";
-        this.email = email;
+class Vehiculo {
+    constructor(marca, modelo, precio, disponible = true) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.precio = precio;
+        this.disponible = disponible;
     }
 
-    saludar() {
-        if (this.vivo) {
-            console.log(`Hola, mi nombre es: ${this.nombre} y mi Email es: ${this.email}`);
+    getNombreCompleto() {
+        return `${this.marca} ${this.modelo}`; // Ejemplo Ford Fiesta 2020
+    }
+
+    alquilar() {
+        if (this.disponible) {
+            this.disponible = false;
+            console.log(`${this.getNombreCompleto()} ha sido Alquilado.!`);
         } else {
-            console.warn(`Hola, ${this.nombre} esta Morido`);
+            console.warn(`${this.getNombreCompleto()} ya esta Alquilado.!`);
         }
     }
 
-    dormir() {
-        console.log(`Hola, mi nombre es: ${this.nombre} y estoy Durmiendo`);
-    }
-}
-
-// Aplicamos Herencia
-class Argentino extends Persona{ 
-    // Aplicamos Polimorfismo
-    dormir() {
-        console.log(`Hola, mi nombre es: ${this.nombre} y estoy Durmiendo desde Argentino`);
+    devolver() {
+        if (!this.disponible) {
+            this.disponible = true;
+            console.log(`${this.getNombreCompleto()} ha sido Devuelto y esta Disponible.!`);
+        } else {
+            console.warn(`${this.getNombreCompleto()} ya esta Disponible.!`);
+        }
     }
 
-    correr(){
-        console.log(`Hola, mi nombre es: ${this.nombre} y estoy Corriendo`);
+    mostrarInfo() {
+        // let estado;
+        // if(this.disponible){
+        //     estado = 'Disponible';
+        // } else {
+        //     estado = 'Alquilado';
+        // }
+
+        // Uso de ternario
+        const estado = this.disponible ? 'Disponible' : 'Alquilado';
+        console.log(`Vehiculo: ${this.getNombreCompleto()}, Precio por día: $${this.precio}.-, Estado: ${estado}`);
     }
 }
+const STORAGE_KEY = "vehiculos_en_alquiler";
 
-// Funcion para recuperar personas del LS
-function cargarPersonasDesdeElLS() {
-    const datos = localStorage.getItem("personas");
-    if (!datos) return [];
-    const datosParseados = JSON.parse(datos);
-    //Reconstruir instancias de Persona
-    return datosParseados.map(p => new Argentino(p.nombre, p.edad, String(p.vivo), p.email));
+function cargarVehiculosDelLS() {
+    const data = localStorage.getItem(STORAGE_KEY);
+    if (!data) return [];
+    // Recorremos todo el Array y lo mapeamos para que por cada Objeto nos arme un Vehiculo
+    return JSON.parse(data).map(
+        (v) => new Vehiculo(v.marca, v.modelo, v.precio, v.disponible)
+    );
+};
+
+function guardarVehiculosAlLS(lista) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
 }
 
-// Funcion para Guardar en el LS
-function guardarPersonasEnLS(personas) {
-    localStorage.setItem("personas", JSON.stringify(personas));
+// La variable vehiculos contiene todos los Vehiculos
+let vehiculos = cargarVehiculosDelLS(); // Aca se estan guardando TODOS los Vehiculos que existen, y esto se actualiza constantemente.
+let continuar = true;
+console.log(vehiculos)
+
+function buscarVehiculo(marca, modelo) {
+    return vehiculos.find(
+        (v) =>
+            v.marca.toLowerCase() === marca.toLowerCase() &&
+            v.modelo.toLowerCase() === modelo.toLowerCase()
+    )
 }
 
-// const personas = cargarPersonasDesdeElLS();
+while (continuar) {
+    const accion = prompt(
+        'Elija una Opcion:\n' +
+        '1) Registrar un Vehiculo\n' +
+        '2) Alquilar un Vehiculo\n' +
+        '3) Devolver un Vehiculo\n' +
+        '4) Mostrar Información\n' +
+        '5) Salir'
+    );
 
-// let seguir = confirm("¿Queres agregar una nueva Persona?");
+    switch (accion) {
+        case '1': {
+            const marca = prompt("Ingrese la marca del Vahiculo");
+            const modelo = prompt("Ingrese el modelo del Vahiculo");
+            const precio = parseFloat(prompt("Ingrese el precio de Alquiler por dia"));
 
-// while (seguir) {
-//     const nombre = prompt("Ingrese un Nombre:");
-//     const edad = prompt("Ingrese la Edad:");
-//     const email = prompt("Ingrese el Email:");
-//     const vivo = prompt("¿Esta Vivo? (true/false)");
+            if (!marca || !modelo || isNaN(precio)) {
+                console.error("Datos invalidos, Intente nuevamente...");
+                break;
+            }
 
-//     const nuevaPersona = new Argentino(nombre, edad, vivo, email);
-//     personas.push(nuevaPersona);
+            if (buscarVehiculo(marca, modelo)) {
+                console.warn(`Ya existe el Vehiculo ${marca} ${modelo}`);
+                break;
+            }
 
-//     guardarPersonasEnLS(personas)
+            const nuevoVehiculo = new Vehiculo(marca, modelo, precio);
+            vehiculos.push(nuevoVehiculo);
+            guardarVehiculosAlLS(vehiculos);
+            console.log(`Vehiculo ${marca} ${modelo} registrado exitosamente`);
+            break;
+        }
 
-//     seguir = confirm("¿Queres seguir cargando Personas?")
-// }
+        case '2': {
+            if (vehiculos.length === 0) {
+                console.warn("No hay vehiculos para Alquiler");
+                break;
+            }
 
-const personas = [
-    new Persona("Santino", "20", "true", "mail@fsdfsdf.sdf"),
-    new Argentino("Alejandro", "49", "true", "masdasd@asasdasd.asd")
-]
+            const marca = prompt("Ingrese la marca del Vahiculo");
+            const modelo = prompt("Ingrese el modelo");
+            const v = buscarVehiculo(marca, modelo);
 
-console.log("Personas Creadas: ", personas);
+            if (v) {
+                v.alquilar();
+                guardarVehiculosAlLS(vehiculos);
+            } else {
+                console.warn("El Vehiculo no fue Encontrado");
+            }
 
-personas.forEach(p => p.saludar());
+            break;
+        }
 
-personas.forEach(p => p.dormir());
+        case '3': {
+            if (vehiculos.length === 0) {
+                console.warn("No hay vehiculos Registrados");
+                break;
+            }
 
-personas.forEach(p => {
-    if(p instanceof Argentino){
-        p.correr()
+            const marca = prompt("Ingrese la marca del Vahiculo");
+            const modelo = prompt("Ingrese el modelo");
+            const v = buscarVehiculo(marca, modelo);
+
+            if (v) {
+                v.devolver();
+                guardarVehiculosAlLS(vehiculos);
+            } else {
+                console.warn("El Vehiculo no fue Encontrado");
+            }
+
+            break;
+        }
+
+        case '4': {
+            if (vehiculos.length === 0) {
+                console.warn("No hay vehiculos Registrados");
+                break;
+            }
+
+            const opcion = prompt(
+                'a) Ver un Vehiculo en Particular\n' +
+                'b) Ver todos los vahiculos'
+            ).toLowerCase();
+
+            if (opcion === 'a') {
+                const marca = prompt("Ingrese la marca del Vahiculo");
+                const modelo = prompt("Ingrese el modelo");
+                const v = buscarVehiculo(marca, modelo);
+
+                v ? v.mostrarInfo() : console.warn("El vehiculo no existe");
+
+            } else if (opcion === 'b') {
+                vehiculos.forEach((v) => v.mostrarInfo())
+            } else {
+                console.error("opcion invalida");
+            }
+            break;
+        }
+
+        case '5': {
+            continuar = false;
+            console.log("Saliendo del Programa....")
+            break;
+        }
+
+        default:
+            console.error("Opcion invalida, intente de nuevo...")
+
     }
-});
+
+}
