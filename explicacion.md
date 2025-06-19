@@ -1,61 +1,38 @@
-# Resumen paso a paso
+# Clase 04
 
-## Problema: Sistema de Gestión de Alquiler de Vehículos
-
-> Descripción:
-
-    Imagina que estás desarrollando un simulador para gestionar el alquiler de vehículos en una agencia de alquiler 
-    de autos. En este simulador, cada vehículo tiene un nombre (marca y modelo), un precio de alquiler por día, y un 
-    estado de disponibilidad (disponible o alquilado). Debes permitir que el usuario realice las siguientes acciones:
-
-    Registrar un nuevo vehículo: Agregar un nuevo vehículo al sistema, especificando su nombre, precio de alquiler por 
-    día, y estado inicial como disponible.
-    Alquilar un vehículo: Cambiar el estado de un vehículo a "alquilado" si está disponible, y mostrar un mensaje de 
-    confirmación.
-    Devolver un vehículo: Cambiar el estado de un vehículo a "disponible" si está alquilado, y mostrar un mensaje de 
-    confirmación.
-    Mostrar la información del vehículo: Mostrar los detalles del vehículo (nombre, precio de alquiler por día, y 
-    estado actual).
-    Salir del programa: Finalizar el programa.
-    El programa debe seguir funcionando hasta que el usuario elija salir.
+> 🛠 **Sistema de Gestión de Alquiler de Vehículos con HTML + CSS + JS + LocalStorage**
 
 ---
 
-## 🧠 RESUMEN: Cómo resolvimos el ejercicio paso a paso
+## 🔰 OBJETIVO GENERAL
+
+Crear una **aplicación web sencilla** que permita:
+
+* Registrar vehículos (marca, modelo, precio).
+* Alquilarlos o devolverlos.
+* Ver la lista en una tabla.
+* Guardar y mantener los datos aunque se recargue la página (con `localStorage`).
+* Mostrar la información completa de un vehículo al hacer clic en un botón de "ver".
 
 ---
 
-### 🧾 **Objetivo del ejercicio**
+## 📦 ESTRUCTURA DEL PROYECTO
 
-Crear un sistema que permita:
+Creamos 3 archivos:
 
-1. Registrar un vehículo (marca, modelo, precio).
-2. Alquilarlo o devolverlo.
-3. Mostrar información del vehículo o todos.
-4. Guardar todo en `localStorage` para que los datos no se pierdan al recargar la página.
-
----
-
-## 🔧 PASO A PASO
+```bash
+index.html   → Estructura visual (formulario, tabla, divs)
+style.css    → Estilo visual (colores, tamaños, márgenes)
+app.js       → Lógica (crear, guardar, alquilar, devolver, mostrar info)
+```
 
 ---
 
-### 1. **Creamos una clase `Vehiculo`**
+## ✅ PASO A PASO Y EXPLICACIÓN
 
-Una clase en JS es una "plantilla" para crear objetos. Le agregamos:
+---
 
-* Propiedades:
-
-  * `marca`
-  * `modelo`
-  * `precio`
-  * `disponible` (por defecto es `true`)
-* Métodos:
-
-  * `alquilar()`: cambia el estado a "alquilado"
-  * `devolver()`: cambia el estado a "disponible"
-  * `mostrarInfo()`: muestra la info completa
-  * `getNombreCompleto()`: devuelve `"marca modelo"` (para mostrarlo bonito)
+### 1. **Creamos la clase `Vehiculo` en `app.js`**
 
 ```js
 class Vehiculo {
@@ -63,112 +40,222 @@ class Vehiculo {
     this.marca = marca;
     this.modelo = modelo;
     this.precio = precio;
-    this.disponible = disponible;
+    this.disponible = disponible; // siempre comienza disponible
   }
-  // métodos aquí...
+
+  getNombreCompleto() {
+    return `${this.marca} ${this.modelo}`;
+  }
 }
 ```
 
+📌 **¿Por qué?**
+
+Creamos una clase para representar a cada vehículo. Esta clase nos permite trabajar con objetos ordenados que tienen marca, modelo, precio y estado de disponibilidad.
+
 ---
 
-### 2. **Guardamos los vehículos en `localStorage`**
-
-* `localStorage` permite guardar datos aunque recargues la página.
-* Creamos dos funciones:
+### 2. **Guardamos los vehículos en el navegador con `localStorage`**
 
 ```js
+const STORAGE_KEY = "vehiculos_en_alquiler";
+
 function cargarVehiculos() {
-  // lee el array desde localStorage y lo convierte en objetos Vehiculo
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data
+    ? JSON.parse(data).map(v => new Vehiculo(v.marca, v.modelo, v.precio, v.disponible))
+    : [];
 }
 
 function guardarVehiculos(lista) {
-  // convierte el array en JSON y lo guarda en localStorage
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
 }
 ```
 
----
+📌 **¿Por qué?**
 
-### 3. **Creamos funciones auxiliares**
+Usamos `localStorage` para guardar los datos de forma permanente en el navegador. Si cerrás la pestaña y volvés, los datos siguen ahí.
 
-Por ejemplo:
-
-* `buscarVehiculo(marca, modelo)` busca un vehículo por sus datos.
-* Esto ayuda a evitar duplicados o buscar el que se quiere alquilar/devolver.
+* `guardarVehiculos()` convierte el array a JSON y lo guarda.
+* `cargarVehiculos()` lo recupera y convierte cada objeto plano en una instancia de `Vehiculo`.
 
 ---
 
-### 4. **Creamos el menú con `prompt()`**
+### 3. **Creamos el HTML con un formulario y una tabla (`index.html`)**
 
-Usamos un `while (continuar)` con un `prompt()` para que el usuario elija qué hacer:
-
-```js
-const accion = prompt("Elija una opción: 1, 2, 3, 4, 5...");
+```html
+<form id="vehiculo-form">
+  <input type="text" id="marca" placeholder="Marca" required />
+  <input type="text" id="modelo" placeholder="Modelo" required />
+  <input type="number" id="precio" placeholder="Precio por día" required />
+  <button type="submit">Registrar vehículo</button>
+</form>
 ```
 
----
+```html
+<table>
+  <thead> ... </thead>
+  <tbody id="lista-vehiculos"></tbody>
+</table>
 
-### 5. **Agregamos `switch` para las acciones**
+<div id="informacion">
+  <strong>Información del vehículo:</strong>
+  <div id="contenido-info">Seleccioná un vehículo para ver más detalles</div>
+</div>
+```
 
-#### ✅ Opción 1: Registrar vehículo
+📌 **¿Por qué?**
 
-* Pedimos los datos con `prompt()`
-* Creamos un nuevo `Vehiculo`
-* Lo agregamos a la lista y lo guardamos con `guardarVehiculos`
-
----
-
-#### 🚗 Opción 2: Alquilar vehículo
-
-* Pedimos marca y modelo
-* Buscamos si existe
-* Si está disponible, lo alquilamos
-
----
-
-#### ↩ Opción 3: Devolver vehículo
-
-* Igual que alquilar, pero se marca como disponible
+* El formulario sirve para registrar nuevos vehículos.
+* La tabla muestra los vehículos ya cargados.
+* El `div#informacion` se usa para mostrar información detallada cuando apretamos el botón 👁️.
 
 ---
 
-#### 📄 Opción 4: Mostrar información
+### 4. **Registramos vehículos desde el formulario**
 
-* Mostramos todos los vehículos o uno específico según lo que el usuario elija
+```js
+document
+  .getElementById("vehiculo-form")
+  .addEventListener("submit", e => {
+    e.preventDefault(); // evita recargar la página
+    const marca = ...
+    const modelo = ...
+    const precio = ...
 
----
+    if (!marca || !modelo || isNaN(precio)) return alert("Datos inválidos");
 
-#### ❌ Opción 5: Salir
+    if (existeVehiculo(marca, modelo)) {
+      return alert(`Ya existe el vehículo`);
+    }
 
-* Cortamos el bucle (`continuar = false`)
-* Mostramos mensaje de salida
+    vehiculos.push(new Vehiculo(marca, modelo, precio));
+    guardarVehiculos(vehiculos);
+    pintarTabla();
+    e.target.reset();
+  });
+```
 
----
+📌 **¿Por qué?**
 
-## 💡 Conceptos importantes que aplicamos
-
-| Concepto         | Descripción breve                                               |
-| ---------------- | --------------------------------------------------------------- |
-| `class`          | Crea objetos con métodos y propiedades                          |
-| `prompt()`       | Pide datos al usuario                                           |
-| `localStorage`   | Guarda datos como texto permanente en el navegador              |
-| `JSON.stringify` | Convierte objetos a texto JSON (para guardar en localStorage)   |
-| `JSON.parse`     | Convierte texto JSON a objetos (para usar lo guardado)          |
-| `switch/case`    | Alternativa a muchos `if`, para controlar el flujo del programa |
-| `array.push()`   | Agrega elementos a un array                                     |
-
----
-
-## ✅ Resultado final
-
-✅ El usuario puede usar el sistema desde la consola del navegador
-✅ Todos los vehículos quedan guardados en `localStorage`
-✅ Es fácil de usar y seguir
+Escuchamos el evento de `submit` del formulario y creamos un nuevo objeto `Vehiculo` solo si los datos son válidos y no está duplicado. Luego lo guardamos y lo mostramos.
 
 ---
 
-## 🛠 Consejos para probarlo
+### 5. **Mostramos todos los vehículos en una tabla (`pintarTabla`)**
 
-1. Abrí un archivo `.html` con el código.
-2. Entrá a la consola del navegador (F12).
-3. Interactuá con las ventanas emergentes (`prompt`) y mirá la consola (`console.log()`).
-4. Cerrá la pestaña, volvé a abrirla: ¡los vehículos siguen ahí gracias a `localStorage`!
+```js
+function pintarTabla() {
+  const tbody = document.getElementById("lista-vehiculos");
+  tbody.innerHTML = "";
+
+  vehiculos.forEach((v, idx) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${v.marca}</td>
+      <td>${v.modelo}</td>
+      <td>$${v.precio}</td>
+      <td>${v.disponible ? "Disponible" : "Alquilado"}</td>
+      <td>
+        <button class="ver" data-idx="${idx}">👁️</button>
+        ${v.disponible
+          ? `<button class="alquilar" data-idx="${idx}">Alquilar</button>`
+          : `<button class="devolver" data-idx="${idx}">Devolver</button>`}
+        <button class="eliminar" data-idx="${idx}">🗑</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+```
+
+📌 **¿Por qué?**
+
+Esta función genera el HTML de la tabla dinámicamente según el array `vehiculos`. Le asignamos a cada botón un `data-idx` para saber a qué vehículo corresponde.
+
+---
+
+### 6. **Acciones sobre los botones: alquilar, devolver, eliminar, ver**
+
+```js
+document
+  .getElementById("lista-vehiculos")
+  .addEventListener("click", e => {
+    const idx = e.target.dataset.idx;
+    if (idx === undefined) return;
+
+    if (e.target.classList.contains("ver")) {
+      const v = vehiculos[idx];
+      document.getElementById("contenido-info").innerHTML = `
+        <ul>
+          <li><strong>Marca:</strong> ${v.marca}</li>
+          <li><strong>Modelo:</strong> ${v.modelo}</li>
+          <li><strong>Precio:</strong> $${v.precio}</li>
+          <li><strong>Estado:</strong> ${v.disponible ? "Disponible" : "Alquilado"}</li>
+        </ul>
+      `;
+    }
+
+    else if (e.target.classList.contains("alquilar")) {
+      vehiculos[idx].disponible = false;
+    }
+
+    else if (e.target.classList.contains("devolver")) {
+      vehiculos[idx].disponible = true;
+    }
+
+    else if (e.target.classList.contains("eliminar")) {
+      if (!confirm("¿Eliminar este vehículo?")) return;
+      vehiculos.splice(idx, 1);
+    }
+
+    guardarVehiculos(vehiculos);
+    pintarTabla();
+  });
+```
+
+📌 **¿Por qué?**
+
+Usamos delegación de eventos para capturar los clicks en toda la tabla. Según el botón que se haya tocado:
+
+* `"ver"` → muestra la info en el `div#informacion`
+* `"alquilar"` → cambia a "Alquilado"
+* `"devolver"` → cambia a "Disponible"
+* `"eliminar"` → borra el vehículo
+
+Siempre guardamos los cambios en `localStorage` y volvemos a mostrar la tabla.
+
+---
+
+### 7. **Cargamos la tabla al iniciar la página**
+
+```js
+window.addEventListener("DOMContentLoaded", pintarTabla);
+```
+
+📌 **¿Por qué?**
+
+Así, apenas abrís la página, ya se cargan los vehículos guardados y se muestran sin que el usuario tenga que hacer nada.
+
+---
+
+## 🎉 FUNCIONALIDADES LOGRADAS
+
+| Funcionalidad               | ¿Implementada?   |
+| --------------------------- | ---------------- |
+| Registrar vehículo          | ✅ Sí             |
+| Alquilar y devolver         | ✅ Sí             |
+| Mostrar información         | ✅ Sí (👁️ botón) |
+| Eliminar vehículo           | ✅ Sí (🗑 botón)  |
+| Guardar en localStorage     | ✅ Sí             |
+| Persistencia entre recargas | ✅ Sí             |
+| Interfaz 100% visual        | ✅ Sí             |
+
+---
+
+## ¿Qué podés agregar después?
+
+* Filtros por estado: mostrar solo disponibles o alquilados.
+* Ordenar por precio o por nombre.
+* Mostrar estadísticas (cuántos disponibles, ingresos simulados, etc).
+* Que la tabla se actualice en tiempo real con animaciones (opcional).
+* Agregar modal (ventana flotante) en vez de un `div`.
