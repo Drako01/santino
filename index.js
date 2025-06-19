@@ -63,7 +63,7 @@ class Vehiculo {
 }
 const STORAGE_KEY = "vehiculos_en_alquiler";
 
-function cargarVehiculosDelLS() {
+function cargarVehiculos() {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) return [];
     // Recorremos todo el Array y lo mapeamos para que por cada Objeto nos arme un Vehiculo
@@ -72,14 +72,13 @@ function cargarVehiculosDelLS() {
     );
 };
 
-function guardarVehiculosAlLS(lista) {
+function guardarVehiculos(lista) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
 }
 
 // La variable vehiculos contiene todos los Vehiculos
-let vehiculos = cargarVehiculosDelLS(); // Aca se estan guardando TODOS los Vehiculos que existen, y esto se actualiza constantemente.
-let continuar = true;
-console.log(vehiculos)
+let vehiculos = cargarVehiculos(); // Aca se estan guardando TODOS los Vehiculos que existen, y esto se actualiza constantemente.
+
 
 function buscarVehiculo(marca, modelo) {
     return vehiculos.find(
@@ -89,114 +88,30 @@ function buscarVehiculo(marca, modelo) {
     )
 }
 
-while (continuar) {
-    const accion = prompt(
-        'Elija una Opcion:\n' +
-        '1) Registrar un Vehiculo\n' +
-        '2) Alquilar un Vehiculo\n' +
-        '3) Devolver un Vehiculo\n' +
-        '4) Mostrar Información\n' +
-        '5) Salir'
-    );
+/** Funcion de Renderizado*******/
 
-    switch (accion) {
-        case '1': {
-            const marca = prompt("Ingrese la marca del Vahiculo");
-            const modelo = prompt("Ingrese el modelo del Vahiculo");
-            const precio = parseFloat(prompt("Ingrese el precio de Alquiler por dia"));
+function pintarTabla() {
+    const tBody = document.getElementById('lista-vehiculos')
+    tBody.innerHTML = ''; // limpiar la tabla
 
-            if (!marca || !modelo || isNaN(precio)) {
-                console.error("Datos invalidos, Intente nuevamente...");
-                break;
-            }
-
-            if (buscarVehiculo(marca, modelo)) {
-                console.warn(`Ya existe el Vehiculo ${marca} ${modelo}`);
-                break;
-            }
-
-            const nuevoVehiculo = new Vehiculo(marca, modelo, precio);
-            vehiculos.push(nuevoVehiculo);
-            guardarVehiculosAlLS(vehiculos);
-            console.log(`Vehiculo ${marca} ${modelo} registrado exitosamente`);
-            break;
-        }
-
-        case '2': {
-            if (vehiculos.length === 0) {
-                console.warn("No hay vehiculos para Alquiler");
-                break;
-            }
-
-            const marca = prompt("Ingrese la marca del Vahiculo");
-            const modelo = prompt("Ingrese el modelo");
-            const v = buscarVehiculo(marca, modelo);
-
-            if (v) {
-                v.alquilar();
-                guardarVehiculosAlLS(vehiculos);
-            } else {
-                console.warn("El Vehiculo no fue Encontrado");
-            }
-
-            break;
-        }
-
-        case '3': {
-            if (vehiculos.length === 0) {
-                console.warn("No hay vehiculos Registrados");
-                break;
-            }
-
-            const marca = prompt("Ingrese la marca del Vahiculo");
-            const modelo = prompt("Ingrese el modelo");
-            const v = buscarVehiculo(marca, modelo);
-
-            if (v) {
-                v.devolver();
-                guardarVehiculosAlLS(vehiculos);
-            } else {
-                console.warn("El Vehiculo no fue Encontrado");
-            }
-
-            break;
-        }
-
-        case '4': {
-            if (vehiculos.length === 0) {
-                console.warn("No hay vehiculos Registrados");
-                break;
-            }
-
-            const opcion = prompt(
-                'a) Ver un Vehiculo en Particular\n' +
-                'b) Ver todos los vahiculos'
-            ).toLowerCase();
-
-            if (opcion === 'a') {
-                const marca = prompt("Ingrese la marca del Vahiculo");
-                const modelo = prompt("Ingrese el modelo");
-                const v = buscarVehiculo(marca, modelo);
-
-                v ? v.mostrarInfo() : console.warn("El vehiculo no existe");
-
-            } else if (opcion === 'b') {
-                vehiculos.forEach((v) => v.mostrarInfo())
-            } else {
-                console.error("opcion invalida");
-            }
-            break;
-        }
-
-        case '5': {
-            continuar = false;
-            console.log("Saliendo del Programa....")
-            break;
-        }
-
-        default:
-            console.error("Opcion invalida, intente de nuevo...")
-
-    }
-
+    vehiculos.forEach((v, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${v.marca}</td>
+            <td>${v.modelo}</td>
+            <td>${v.precio}</td>
+            <td>${v.disponible ? 'Disponible' : 'Alquilado'}</td>
+            <td>
+                ${v.disponible
+                    ?  `<button class="alquilar" data-idx="${idx}">Alquilar</button>`
+                    :  `<button class="devolver" data-idx="${idx}">Devolver</button>`
+                }
+                <button class="eliminar" data-idx="${idx}">Eliminar</button>
+            </td>
+        `;
+        tBody.appendChild(tr);
+    })
+    
 }
+
+// pintarTabla()

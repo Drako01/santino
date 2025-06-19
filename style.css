@@ -1,0 +1,57 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f6f6f6;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+input,
+button {
+    padding: 8px 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+}
+
+button.alquilar {
+    background: #2ecc71;
+    color: #fff;
+}
+
+button.devolver {
+    background: #e74c3c;
+    color: #fff;
+}
+
+button.eliminarr {
+    background: #555;
+    color: #fff;
+}
