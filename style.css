@@ -55,3 +55,7 @@ button.eliminarr {
     background: #555;
     color: #fff;
 }
+
+.errores {
+    color: #e74c3c;
+}

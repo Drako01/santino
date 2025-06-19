@@ -30,24 +30,6 @@ class Vehiculo {
         return `${this.marca} ${this.modelo}`; // Ejemplo Ford Fiesta 2020
     }
 
-    alquilar() {
-        if (this.disponible) {
-            this.disponible = false;
-            console.log(`${this.getNombreCompleto()} ha sido Alquilado.!`);
-        } else {
-            console.warn(`${this.getNombreCompleto()} ya esta Alquilado.!`);
-        }
-    }
-
-    devolver() {
-        if (!this.disponible) {
-            this.disponible = true;
-            console.log(`${this.getNombreCompleto()} ha sido Devuelto y esta Disponible.!`);
-        } else {
-            console.warn(`${this.getNombreCompleto()} ya esta Disponible.!`);
-        }
-    }
-
     mostrarInfo() {
         // let estado;
         // if(this.disponible){
@@ -103,15 +85,77 @@ function pintarTabla() {
             <td>${v.disponible ? 'Disponible' : 'Alquilado'}</td>
             <td>
                 ${v.disponible
-                    ?  `<button class="alquilar" data-idx="${idx}">Alquilar</button>`
-                    :  `<button class="devolver" data-idx="${idx}">Devolver</button>`
-                }
+                ? `<button class="alquilar" data-idx="${idx}">Alquilar</button>`
+                : `<button class="devolver" data-idx="${idx}">Devolver</button>`
+            }
                 <button class="eliminar" data-idx="${idx}">Eliminar</button>
+                <button class="ver" data-idx="${idx}">👁️</button>
             </td>
         `;
         tBody.appendChild(tr);
     })
-    
+
 }
 
-// pintarTabla()
+/** EVENTO DE ALTA */
+document
+    .getElementById('vehiculo-form')
+    .addEventListener('submit', e => {
+        e.preventDefault()
+
+        const marca = document.getElementById('marca').value.trim();
+        const modelo = document.getElementById('modelo').value.trim();
+        const precio = parseFloat(document.getElementById('precio').value);
+        const errores = document.getElementById('errores');
+
+        if (!marca || !modelo || isNaN(precio)) return alert("Datos invalidos");
+
+        if (buscarVehiculo(marca, modelo)) {
+            errores.innerHTML = `
+            <pre class="errores test-center">Ya existe un vehiculo con la Marca ${marca} y el Modelo ${modelo}</pre>`
+            return
+        }
+
+        vehiculos.push(new Vehiculo(marca, modelo, precio));
+        guardarVehiculos(vehiculos);
+        pintarTabla();
+        e.target.reset();
+    })
+
+/**ACCIONES DE ALQUILAR O DEVOLVER O ELIMINAR*/
+document
+    .getElementById('lista-vehiculos')
+    .addEventListener('click', e => {
+        const idx = e.target.dataset.idx;
+
+        if (idx === undefined) return;
+
+        if (e.target.classList.contains('alquilar')) {
+            vehiculos[idx].disponible = false;
+        } else if (e.target.classList.contains('devolver')) {
+            vehiculos[idx].disponible = true;
+        } else if (e.target.classList.contains('eliminar')) {
+            if (!confirm("¡Eliminar vehiculo?")) return;
+            vehiculos.splice(idx, 1);
+        } else if(e.target.classList.contains('ver')){
+            const v = vehiculos[idx];
+            const div = document.getElementById('contenido-info');
+            const estado = v.disponible ? 'Disponible' : 'Alquilado';
+            div.innerHTML = `
+            <pre>
+                <ul>
+                    <li><strong>Marca:</strong> ${v.marca}</li>
+                    <li><strong>Modelo:</strong> ${v.modelo}</li>
+                    <li><strong>Precio por día:</strong> $${v.precio}.-</li>
+                    <li><strong>Modelo:</strong> ${estado}</li>
+                </ul>
+            </pre>
+            `;
+        }
+        guardarVehiculos(vehiculos);
+        pintarTabla();
+    })
+
+
+// Ventana escucha el evento de que el Documento se termine de cargar y ejecuta pintarTabla
+window.addEventListener('DOMContentLoaded', pintarTabla);
