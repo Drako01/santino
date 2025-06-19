@@ -30,18 +30,6 @@ class Vehiculo {
         return `${this.marca} ${this.modelo}`; // Ejemplo Ford Fiesta 2020
     }
 
-    mostrarInfo() {
-        // let estado;
-        // if(this.disponible){
-        //     estado = 'Disponible';
-        // } else {
-        //     estado = 'Alquilado';
-        // }
-
-        // Uso de ternario
-        const estado = this.disponible ? 'Disponible' : 'Alquilado';
-        console.log(`Vehiculo: ${this.getNombreCompleto()}, Precio por día: $${this.precio}.-, Estado: ${estado}`);
-    }
 }
 const STORAGE_KEY = "vehiculos_en_alquiler";
 
