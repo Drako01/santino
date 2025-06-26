@@ -1,230 +1,372 @@
-# 🛠 Gestión de Alquiler de Vehículos con JavaScript, HTML, CSS y LocalStorage
+# Clase 05
 
-Este proyecto es una aplicación web simple que permite **registrar, alquilar, devolver y visualizar vehículos**, con **persistencia de datos en el navegador**. Todo se maneja visualmente a través de formularios, botones y tablas.
+## ⏱️ Duración estimada por sección
+
+1. **Introducción a la asincronía y callbacks**
+2. **Qué es una Promesa y su sintaxis básica**
+3. **Estados de una Promesa y encadenamiento (.then / .catch / .finally)**
+4. **Creación de Promesas personalizadas (25 min)**
+5. **Simulación de peticiones con `setTimeout`**
+6. **Métodos útiles: `Promise.all`, `Promise.race`, `Promise.any`, `Promise.allSettled`**
+7. **Ejercicio práctico final**
 
 ---
 
-## 📘 Contenido teórico relevante
+## 🧠 ¿Qué es un callback?
 
-A continuación, explicamos los conceptos clave usados en este proyecto, con ejemplos simples para principiantes.
+Un **callback** es simplemente **una función que se pasa como argumento a otra función**, y que se ejecuta **después** de que la función principal termina su trabajo.
+
+💬 En otras palabras:
+
+> *"Ey, cuando termines eso, llamá a esta función."*
 
 ---
 
-## 1️⃣ Clases en JavaScript
-
-Las clases son plantillas para crear objetos. Nos permiten organizar mejor nuestro código y reutilizar estructuras.
-
-### Ejemplo
+## 🎯 Ejemplo muy simple
 
 ```js
-class Vehiculo {
-  constructor(marca, modelo, precio, disponible = true) {
-    this.marca = marca;
-    this.modelo = modelo;
-    this.precio = precio;
-    this.disponible = disponible;
-  }
-
-  getNombreCompleto() {
-    return `${this.marca} ${this.modelo}`;
-  }
+function saludar(nombre) {
+  console.log("Hola, " + nombre);
 }
-````
 
-✅ **¿Qué hace esto?**
+function procesarUsuario(callback) {
+  const nombre = "Santino";
+  callback(nombre); // Llama a la función saludar con el nombre
+}
 
-* Crea una clase `Vehiculo` con propiedades.
-* Tiene un método `getNombreCompleto()` para mostrar marca + modelo.
+procesarUsuario(saludar);
+```
+
+🧾 **Salida por consola:**
+
+```js
+Hola, Santino
+```
+
+🔍 **¿Qué pasó acá?**
+
+* `saludar` es una función.
+* La pasamos como argumento a `procesarUsuario`.
+* Cuando `procesarUsuario` termina, **llama a `saludar(nombre)`**.
 
 ---
 
-## 2️⃣ localStorage
-
-`localStorage` permite guardar información **de forma permanente** en el navegador (aunque recargues o cierres la página).
-
-### Guardar datos
+## 🕗 Ejemplo con `setTimeout` (simula algo que tarda)
 
 ```js
-localStorage.setItem("clave", JSON.stringify(objeto));
+function decirDespues() {
+  console.log("Esto se dijo después ⏳");
+}
+
+console.log("Inicio");
+setTimeout(decirDespues, 2000); // Llama a la función después de 2 segundos
+console.log("Fin");
 ```
 
-### Leer datos
+🧾 Salida:
 
 ```js
-const datos = JSON.parse(localStorage.getItem("clave"));
+Inicio
+Fin
+Esto se dijo después ⏳
 ```
+
+✅ Aquí `setTimeout` usa un callback (`decirDespues`) que se ejecuta luego de 2 segundos.
 
 ---
 
-## 3️⃣ Funciones útiles: `map`, `forEach`, `find`, `some`
-
-### `.map()`
-
-Transforma cada elemento de un array.
+## 🧩 Ejemplo de callback que recibe datos
 
 ```js
-const numeros = [1, 2, 3];
-const dobles = numeros.map(n => n * 2); // [2, 4, 6]
+function mostrarResultado(resultado) {
+  console.log("Resultado:", resultado);
+}
+
+function sumar(a, b, callback) {
+  const resultado = a + b;
+  callback(resultado); // Llama a mostrarResultado con el resultado
+}
+
+sumar(3, 4, mostrarResultado);
 ```
 
-### `.forEach()`
-
-Recorre un array y ejecuta una función.
+🧾 Salida:
 
 ```js
-vehiculos.forEach(v => console.log(v.marca));
-```
-
-### `.find()`
-
-Busca el primer elemento que cumpla una condición.
-
-```js
-const toyota = vehiculos.find(v => v.marca === "Toyota");
-```
-
-### `.some()`
-
-Devuelve `true` si al menos uno cumple la condición.
-
-```js
-vehiculos.some(v => v.modelo === "Corolla"); // true o false
-```
-
----
-
-## 4️⃣ Manipulación del DOM
-
-El **DOM (Document Object Model)** es la estructura HTML que podemos modificar desde JavaScript.
-
-### Obtener elementos
-
-```js
-const form = document.getElementById("vehiculo-form");
-```
-
-### Crear elementos dinámicamente
-
-```js
-const fila = document.createElement("tr");
-fila.innerHTML = `<td>Ford</td><td>Focus</td>`;
-document.getElementById("tabla").appendChild(fila);
+Resultado: 7
 ```
 
 ---
 
-## 5️⃣ Eventos en el navegador
+## 🧠 ¿Para qué sirven los callbacks?
 
-### `addEventListener`
+Los callbacks son útiles cuando algo **tarda en completarse** (como leer un archivo, pedir datos a internet, etc.). Sirven para decirle a JavaScript:
 
-Permite reaccionar a acciones del usuario como clics o envíos de formularios.
+> “Cuando termines eso, hacé esto otro”.
+
+---
+
+## 📚 Promesas
+
+---
+
+## 🧠 1. Introducción a la asincronía
+
+### 🗣️ Explicación
+
+JavaScript es **mono-hilo**: sólo puede hacer una cosa a la vez. Sin embargo, en el mundo real tenemos tareas que tardan: peticiones a internet, lectura de archivos, animaciones…
+
+### 🔧 Ejemplo clásico con `setTimeout`
 
 ```js
-form.addEventListener("submit", function (e) {
-  e.preventDefault(); // evita recarga
-  console.log("Formulario enviado");
+console.log("Inicio");
+
+setTimeout(() => {
+  console.log("Esto tarda 2 segundos...");
+}, 2000);
+
+console.log("Fin");
+```
+
+### 💡 Punto a destacar
+
+Aunque el `setTimeout` está antes del `"Fin"`, se ejecuta después por ser **asíncrono**.
+
+### ⚠️ Problema con los callbacks
+
+```js
+function leerDatos(callback) {
+  setTimeout(() => {
+    callback("Datos cargados");
+  }, 2000);
+}
+
+leerDatos((resultado) => {
+  console.log(resultado); // Bien
+});
+```
+
+Pero si anidamos muchos:
+
+```js
+func1(() => {
+  func2(() => {
+    func3(() => {
+      func4(() => {
+        console.log("Callback hell 😫");
+      });
+    });
+  });
 });
 ```
 
 ---
 
-## 6️⃣ Delegación de eventos
+## ✅ 2. ¿Qué es una Promesa?
 
-Permite escuchar eventos en un **contenedor padre** para manejar clicks de muchos elementos internos (como los botones de una tabla).
+### 📖 Definición
+
+Una **Promesa** es un objeto que representa un valor que puede estar disponible ahora, en el futuro, o nunca.
 
 ```js
-document.getElementById("tabla").addEventListener("click", function (e) {
-  if (e.target.classList.contains("alquilar")) {
-    // ejecutar acción
+const promesa = new Promise((resolve, reject) => {
+  // lógica asincrónica
+});
+```
+
+### ⚙️ Ejemplo básico
+
+```js
+const promesa = new Promise((resolve, reject) => {
+  let todoOk = true;
+
+  if (todoOk) {
+    resolve("Todo salió bien ✅");
+  } else {
+    reject("Algo falló ❌");
   }
 });
+
+promesa
+  .then((mensaje) => {
+    console.log("Éxito:", mensaje);
+  })
+  .catch((error) => {
+    console.log("Error:", error);
+  });
 ```
 
 ---
 
-## 7️⃣ innerHTML
+## 🧩 3. Estados de una Promesa 
 
-Permite modificar el contenido HTML de un elemento.
+* `pending`: cuando aún no termina
+* `fulfilled`: cuando se resuelve
+* `rejected`: cuando falla
+
+### 🧪 Demo con retraso
 
 ```js
-document.getElementById("info").innerHTML = `
-  <p>Marca: Toyota</p>
-  <p>Modelo: Corolla</p>
-`;
+const promesaLenta = new Promise((resolve) => {
+  setTimeout(() => {
+    resolve("¡Terminó después de 3 segundos!");
+  }, 3000);
+});
+
+console.log("Esperando...");
+promesaLenta.then((res) => console.log(res));
 ```
 
----
-
-## 8️⃣ `dataset` para identificar elementos dinámicos
-
-Podés usar `data-atributos` para identificar elementos HTML.
-
-```html
-<button data-id="2">Alquilar</button>
-```
+### `.finally()`
 
 ```js
-const id = e.target.dataset.id;
+promesaLenta
+  .then(res => console.log(res))
+  .catch(err => console.error(err))
+  .finally(() => console.log("Siempre se ejecuta 🎯"));
 ```
 
 ---
 
-## 9️⃣ Estructura general de una app web JS
+## 🧑‍💻 4. Crear Promesas personalizadas 
 
-```txt
-- index.html    → interfaz visual
-- style.css     → estilos
-- index.js      → lógica y comportamiento
-```
+### 💬 Explicación
 
-La app sigue estos pasos:
-
-1. Carga los vehículos del almacenamiento.
-2. Muestra los vehículos en una tabla.
-3. Permite registrar nuevos vehículos.
-4. Maneja clics para alquilar, devolver o eliminar vehículos.
-5. Muestra información detallada de cada uno.
-6. Guarda los cambios en `localStorage`.
-
----
-
-## 🧠 Recomendaciones para practicar
-
-* Intentá agregar un botón para **vaciar toda la lista**.
-* Agregá una **barra de búsqueda** por marca o modelo.
-* Sumá una **modal o ventana flotante** para mostrar la información en lugar de un `div`.
-
----
-
-## 📌 Ejemplo de código simple
+Tú puedes crear funciones que devuelvan promesas para controlar procesos asíncronos.
 
 ```js
-const vehiculo = new Vehiculo("Ford", "Fiesta", 70);
-console.log(vehiculo.getNombreCompleto()); // Ford Fiesta
+function esperar(ms) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(`Esperaste ${ms} ms`);
+    }, ms);
+  });
+}
+
+esperar(2000).then((res) => console.log(res));
 ```
 
-```js
-vehiculo.disponible = false;
-localStorage.setItem("vehiculo", JSON.stringify(vehiculo));
-```
+### 🧠 Mini ejercicio
 
 ```js
-const guardado = JSON.parse(localStorage.getItem("vehiculo"));
-console.log(guardado.marca); // Ford
+function login(usuario, contraseña) {
+  return new Promise((resolve, reject) => {
+    if (usuario === "admin" && contraseña === "1234") {
+      resolve("Bienvenido admin 🛡️");
+    } else {
+      reject("Usuario o contraseña incorrectos ⚠️");
+    }
+  });
+}
+
+login("admin", "1234").then(console.log).catch(console.error);
 ```
 
 ---
 
-## 🏁 Conclusión
+## 🔄 5. Simulaciones reales con setTimeout 
 
-Este proyecto es ideal para practicar:
+### 🛜 Simular petición a servidor
 
-* **POO (Programación Orientada a Objetos)**
-* **localStorage**
-* **Manipulación del DOM**
-* **Eventos**
-* **JS moderno (ES6+)**
+```js
+function obtenerUsuarios() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(["Juan", "María", "Pedro"]);
+    }, 2000);
+  });
+}
 
-Te permite entender cómo construir una app completa sin necesidad de frameworks externos, solo usando HTML, CSS y JavaScript puro.
+console.log("Cargando usuarios...");
+obtenerUsuarios().then((usuarios) => {
+  console.log("Usuarios:", usuarios);
+});
+```
 
 ---
+
+## 🚀 6. Métodos útiles de `Promise` 
+
+### ✅ `Promise.all`
+
+```js
+const promesa1 = esperar(1000);
+const promesa2 = esperar(2000);
+
+Promise.all([promesa1, promesa2]).then((res) => {
+  console.log("Todo resuelto:", res);
+});
+```
+
+### ⚡ `Promise.race`
+
+```js
+Promise.race([esperar(1000), esperar(3000)]).then((res) => {
+  console.log("La más rápida fue:", res);
+});
+```
+
+### 🎯 `Promise.allSettled`
+
+```js
+const p1 = Promise.resolve("Bien");
+const p2 = Promise.reject("Mal");
+
+Promise.allSettled([p1, p2]).then(console.log);
+```
+
+---
+
+## 🛠️ 7. Ejercicio práctico final 
+
+**Objetivo**: Simular el flujo de una app de pedidos de pizza 🍕
+
+```js
+function pedirPizza() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("🍕 Pizza lista"), 3000);
+  });
+}
+
+function entregarPizza() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("📦 Pizza entregada"), 2000);
+  });
+}
+
+pedirPizza()
+  .then((res) => {
+    console.log(res);
+    return entregarPizza();
+  })
+  .then((res) => console.log(res))
+  .finally(() => console.log("Proceso completo ✔️"));
+```
+
+---
+
+## 🔁 8. Preguntas + repaso 
+
+* ¿Qué diferencia hay entre una promesa y un callback?
+* ¿Cuáles son los 3 estados de una promesa?
+* ¿Qué hace `.then()` vs `.catch()`?
+* ¿Para qué sirve `Promise.all()`?
+
+---
+
+## 📦 BONUS: Promesas + `async/await` 
+
+```js
+async function procesarPizza() {
+  const pedido = await pedirPizza();
+  console.log(pedido);
+
+  const entrega = await entregarPizza();
+  console.log(entrega);
+
+  console.log("¡Todo listo con async/await! 🍽️");
+}
+
+procesarPizza();
+```
+
