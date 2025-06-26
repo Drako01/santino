@@ -35,6 +35,7 @@ const STORAGE_KEY = "vehiculos_en_alquiler";
 
 function cargarVehiculos() {
     const data = localStorage.getItem(STORAGE_KEY);
+    console.log("Data desde el LS: ", JSON.parse(data))
     if (!data) return [];
     // Recorremos todo el Array y lo mapeamos para que por cada Objeto nos arme un Vehiculo
     return JSON.parse(data).map(
@@ -88,8 +89,8 @@ function pintarTabla() {
 /** EVENTO DE ALTA */
 document
     .getElementById('vehiculo-form')
-    .addEventListener('submit', e => {
-        e.preventDefault()
+    .addEventListener('submit', evento => {
+        evento.preventDefault()
 
         const marca = document.getElementById('marca').value.trim();
         const modelo = document.getElementById('modelo').value.trim();
@@ -107,7 +108,7 @@ document
         vehiculos.push(new Vehiculo(marca, modelo, precio));
         guardarVehiculos(vehiculos);
         pintarTabla();
-        e.target.reset();
+        evento.target.reset();
     })
 
 /**ACCIONES DE ALQUILAR O DEVOLVER O ELIMINAR*/
@@ -135,7 +136,7 @@ document
                     <li><strong>Marca:</strong> ${v.marca}</li>
                     <li><strong>Modelo:</strong> ${v.modelo}</li>
                     <li><strong>Precio por día:</strong> $${v.precio}.-</li>
-                    <li><strong>Modelo:</strong> ${estado}</li>
+                    <li><strong>Estado:</strong> ${estado}</li>
                 </ul>
             </pre>
             `;
