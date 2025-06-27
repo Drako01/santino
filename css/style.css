@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+    width: 1080px;
+    margin: auto;
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+#input-tarea {
+    padding: 8px;
+    width: 200px;
+}
+
+button {
+    padding: 8px 12px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+
+}
+
+li {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tarea-completada {
+    text-decoration: line-through;
+    color: #777;
+}
+
+.tarea-incompleta {
+    text-decoration: none;
+    color: #295102;
+    font-weight: bold;
+}

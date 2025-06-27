@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "nombre": "Laptop Gamer",
+        "precio": 1200,
+        "descripcion": "Laptop potente con tarjeta gráfica dedicada"
+    },
+    {
+        "id": 2,
+        "nombre": "Mouse Inalámbrico",
+        "precio": 25,
+        "descripcion": "Mouse ergonómico con conexión Bluetooth"
+    },
+    {
+        "id": 3,
+        "nombre": "Teclado Mecánico",
+        "precio": 70,
+        "descripcion": "Teclado con retroiluminación RGB"
+    },
+    {
+        "id": 4,
+        "nombre": "Teclado Inalámbrico",
+        "precio": 70,
+        "descripcion": "Teclado Inalámbrico con retroiluminación RGB"
+    },
+    {
+        "id": 5,
+        "nombre": "Sistema Operativo Windows",
+        "precio": 470,
+        "descripcion": "Sistema Operativo Windows Free"
+    },
+    {
+        "id": 6,
+        "nombre": "Fuente de Alimentacion",
+        "precio": 250,
+        "descripcion": "Fuente de Alimentacion con retroiluminación RGB"
+    }
+]
