@@ -1,43 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Gestión de Alquiler de Vehículos</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini App de Productos</title>
+    <link rel="stylesheet" href="css/producto.css">
 </head>
-
 <body>
-    <h1>Gestión de Alquiler de Vehículos 🚗</h1>
-
-    <!-- --- FORMULARIO ALTA --- -->
-    <form id="vehiculo-form">
-        <input type="text" id="marca" placeholder="Marca" required />
-        <input type="text" id="modelo" placeholder="Modelo" required />
-        <input type="number" id="precio" placeholder="Precio por día" required />
-        <button type="submit">Registrar vehículo</button>
-    </form>
-    <div id="errores"></div>
-    <!-- --- LISTADO --- -->
-    <table>
-        <thead>
-            <tr>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Precio</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="lista-vehiculos"></tbody>
-    </table>
-    <div id="informacion">
-        <strong>Informacion del Vehiculo</strong>
-        <div id="contenido-info">
-            
+    <h1>🛒 Tienda OnLine</h1>
+    <div class="contenedor-principal">
+        <div id="productos" class="seccion-productos"></div>
+        <div id="carrito" class="seccion-carrito">
+            <ul id="lista-carrito"></ul>
+            <p><strong>Total: </strong> $<span id="total">0</span></p>
         </div>
     </div>
-    <script src="index.js"></script>
+    <script src="js/productos.js"></script>
 </body>
-
 </html>

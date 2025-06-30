@@ -2,36 +2,42 @@
     {
         "id": 1,
         "nombre": "Laptop Gamer",
+        "image": "https://i5.walmartimages.com/seo/iBUYPWER-Gaming-Desktop-PC-SlateMR-203i-Intel-i5-11400F-8GB-DDR4-3000Memory-GeForce-GT-1030-2GB-480GB-SSD-RGB-Windows-10-Home-64-Bit_60731a45-86f2-415e-b156-4ef761b0659b.1274440b178dfb0e567c1e92d30dda90.png",
         "precio": 1200,
         "descripcion": "Laptop potente con tarjeta gráfica dedicada"
     },
     {
         "id": 2,
         "nombre": "Mouse Inalámbrico",
+        "image": "https://intelcorp.scene7.com/is/image/intelcorp/mini-pc-product-image-transparent-background:1920-1080?wid=480&hei=270&fmt=webp-alpha",
         "precio": 25,
         "descripcion": "Mouse ergonómico con conexión Bluetooth"
     },
     {
         "id": 3,
         "nombre": "Teclado Mecánico",
+        "image": "https://oechsle.vteximg.com.br/arquivos/ids/14412798/image-9009da6929734c48978c54d33898c3e2.jpg?v=638278917366570000",
         "precio": 70,
         "descripcion": "Teclado con retroiluminación RGB"
     },
     {
         "id": 4,
         "nombre": "Teclado Inalámbrico",
+        "image": "https://i5.walmartimages.com/seo/iBUYPWER-Gaming-Desktop-PC-SlateMR-203i-Intel-i5-11400F-8GB-DDR4-3000Memory-GeForce-GT-1030-2GB-480GB-SSD-RGB-Windows-10-Home-64-Bit_60731a45-86f2-415e-b156-4ef761b0659b.1274440b178dfb0e567c1e92d30dda90.png",
         "precio": 70,
         "descripcion": "Teclado Inalámbrico con retroiluminación RGB"
     },
     {
         "id": 5,
         "nombre": "Sistema Operativo Windows",
+        "image": "https://electropc.com.ar/wp-content/uploads/2025/06/oficinamoni-jpg-1.webp",
         "precio": 470,
         "descripcion": "Sistema Operativo Windows Free"
     },
     {
         "id": 6,
         "nombre": "Fuente de Alimentacion",
+        "image": "https://st.depositphotos.com/1005404/4661/i/450/depositphotos_46614835-stock-photo-modern-pc.jpg",
         "precio": 250,
         "descripcion": "Fuente de Alimentacion con retroiluminación RGB"
     }
