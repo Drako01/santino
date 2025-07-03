@@ -1,0 +1,31 @@
+{
+  "name": "santino_ecommerce",
+  "version": "1.0.0",
+  "description": "Pequeño ecommerce para traer productos de fakestore",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Drako01/santino.git"
+  },
+  "keywords": [
+    "Ecommerce",
+    "Productos"
+  ],
+  "author": "Alejandro Di Stefano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Drako01/santino/issues"
+  },
+  "homepage": "https://github.com/Drako01/santino#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.7",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

@@ -6,7 +6,9 @@
 santino/
 ├── public/
 │   ├──js/
-│   │   └──app.js
+│   │   └──index.js
+│   ├──css/
+│   │   └──style.css
 │   └── index.html
 ├── node_modules/
 ├── app.js
