@@ -10,19 +10,86 @@
 </head>
 
 <body>
-    <div class="container my-5">
-        <h1 class="text-center mb-4">🛍️ Mini FakeStore</h1>
-        <div class="row" id="products"></div>
+    <div class="wrapper">
+        <main class="container py-4 ">
+            <h1 class="text-center">MiniGestor de Tareas + Tienda 🛒</h1>
+            <p class="text-end small">Hora del servidor: <span id="horaServidor">--:--:--</span></p>
 
-        <hr>
+            <ul class="nav nav-tabs mt-3" id="tabs">
+                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tareas">📋 Tareas</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tienda">🛍️ Tienda</a></li>
+            </ul>
 
-        <h3>🛒 Carrito</h3>
-        <ul id="cart" class="list-group"></ul>
+            <div class="tab-content mt-3">
+                <!-- TAB TAREAS -->
+                <div class="tab-pane fade show active" id="tareas">
+                    <form id="formTarea" class="mb-3">
+                        <input type="text" id="titulo" class="form-control mb-2" placeholder="Título">
+                        <textarea id="descripcion" class="form-control mb-2" placeholder="Descripción"></textarea>
+                        <select id="prioridad" class="form-select mb-2">
+                            <option value="Alta">Alta</option>
+                            <option value="Media">Media</option>
+                            <option value="Baja">Baja</option>
+                        </select>
+                        <button class="btn btn-success">Agregar tarea</button>
+                    </form>
+                    <ul id="listaTareas" class="list-group"></ul>
+                </div>
+
+                <!-- TAB TIENDA -->
+                <div class="tab-pane fade" id="tienda">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="m-0">Productos</h3>
+                        <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#modalCarrito">
+                            🛒 Ver carrito
+                        </a>
+                    </div>
+                    <div class="row" id="productos"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- MODAL CARRITO -->
+        <div class="modal fade" id="modalCarrito" tabindex="-1" aria-labelledby="modalCarritoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">🛒 Carrito de compras</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group" id="carrito"></ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="vaciarCarrito" class="btn btn-danger">Vaciar carrito</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <p>
+                Aplication Ecommerce | &copy;
+                - Copyright by
+                Santino Buttasoni &#xae; - <span id="year"></span> All right reserved
+            </p>
+            <p>
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                    Santino <img src="/img/github.png" alt="Santino" class="github"> Developer </a>
+            </p>
+            <p>
+                <a href="#">See Terms and Conditions</a>
+            </p>
+        </footer>
+
     </div>
 
 
+    <script type="module" src="js/index.js"></script>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

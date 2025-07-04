@@ -1,5 +1,57 @@
-.product_img{
-    height: 200px !important;
-    padding: 2rem;
-    object-fit: contain;
+body{
+    background-color: #f8f9fa;
+}
+
+html, body{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main{
+    flex: 1;
+}
+
+.tarea-completada{
+    text-decoration: line-through;
+    color: #f6ff00;
+    background-color: #545454;
+    font-weight: bold;
+}
+
+#horaServidor{
+    font-size: 1.1rem;
+    margin-left: .5rem;
+    font-weight: bold;
+}
+
+#footer{
+    background-color: #1d1d1d;
+    position: sticky;
+    bottom: 0;
+    height: 12rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 1rem #797979;
+}
+
+#footer p{
+    color: #d7d7d7;
+}
+
+#footer p a{
+    text-decoration: none;
+    color: #d7d7d7;
+}
+
+#footer p img{
+    width: 40px;
 }
