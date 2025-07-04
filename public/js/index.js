@@ -182,11 +182,12 @@ const renderCarrito = () => {
     carrito.forEach(item => {
         const li = document.createElement('li');
         li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        li.innerHTML = `${item.nombre} x ${item.cantidad}
-            <span class="badge bg-primary rounded-pill">$${(item.precio * item.cantidad).toFixed(2)}</span>`;
+        li.innerHTML = `${item.title} x ${item.cantidad}
+            <span class="badge bg-primary rounded-pill">$${(item.price * item.cantidad).toFixed(2)}</span>
+        `;
         listaCarrito.appendChild(li);
-    });
-};
+    })
+}
 
 vaciarBtn.addEventListener('click', () => {
     if (!carrito.length) return;
