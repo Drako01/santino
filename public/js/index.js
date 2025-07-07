@@ -1,234 +1,170 @@
-// ------------- CLASES ----------
-class Tarea {
-    constructor(titulo, descripcion, prioridad) {
-        this.id = Date.now();
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.prioridad = prioridad;
-        this.completada = false;
-    }
+/* ====================== CONFIG ====================== */
+const API_KEY = 'c7097f5a';       // 👉 poné tu clave OMDb
+const PER_PAGE = 10;                // OMDb devuelve 10 por página
+
+/* ================ STATE & HELPERS =================== */
+let currentPage   = 1;
+let currentSearch = '';
+let favorites     = JSON.parse(localStorage.getItem('favorites')) || [];
+
+/* ------------------- DOM refs ----------------------- */
+const $input     = document.getElementById('searchInput');
+const $results   = document.getElementById('results');
+const $history   = document.getElementById('history');
+const $btnSearch = document.getElementById('btnSearch');
+const $btnDark   = document.getElementById('btnDark');
+const $btnFavs   = document.getElementById('btnFavorites');
+const $btnPrev   = document.getElementById('btnPrev');
+const $btnNext   = document.getElementById('btnNext');
+
+/* =================== EVENTOS ======================== */
+document.addEventListener('DOMContentLoaded', () => {
+  applyDarkMode();
+  renderHistory();
+  document.getElementById('year').textContent = new Date().getFullYear();
+});
+
+$btnSearch .addEventListener('click', () => searchMovies());
+$input     .addEventListener('keydown', e => e.key === 'Enter' && searchMovies());
+$btnDark   .addEventListener('click',  toggleDarkMode);
+$btnFavs   .addEventListener('click',  renderFavorites);
+$btnPrev   .addEventListener('click',  prevPage);
+$btnNext   .addEventListener('click',  nextPage);
+
+/* =================  BÚSQUEDA  ======================= */
+function searchMovies() {
+  const query = $input.value.trim();
+  if (!query) return;
+
+  currentSearch = query;
+  currentPage   = 1;
+
+  saveToHistory(query);
+  fetchMovies(query, currentPage);
 }
 
-class Producto {
-    constructor({ id, title, price, image }) {
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.image = image;
-    }
-}
-
-// ------------------------
-
-const LS = {
-    guardar: (key, data) => localStorage.setItem(key, JSON.stringify(data)),
-    obtener: (key, fallback = []) => JSON.parse(localStorage.getItem(key)) || fallback
-}
-
-// ---------ESTADOS ------------
-let tareas = LS.obtener('tareas');
-let productos = [];
-let carrito = LS.obtener('carrito');
-
-// ------------ TAREAS ------------
-
-const listaTareas = document.getElementById('listaTareas');
-
-const renderTareas = () => {
-    listaTareas.innerHTML = '';
-    tareas.forEach(t => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        if (t.completada) li.classList.add('tarea-completada');
-        li.dataset.id = t.id;
-
-        const btnClase = t.completada ? 'btn-info' : 'btn-success text-white';
-        const btnTexto = t.completada ? '✔' : '✔';
-
-        li.innerHTML = `
-            <span>${t.titulo} - ${t.prioridad}</span>
-            <div>
-                <button class="btn btn-sm ${btnClase} mc-2 completar">${btnTexto}</button>
-                <button class="btn btn-sm btn-danger eliminar>🗑️</button> 
-            </div>
-        `;
-        listaTareas.appendChild(li);
+function fetchMovies(query, page) {
+  fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(query)}&page=${page}`)
+    .then(r => r.json())
+    .then(d => d.Response === 'True'
+      ? renderResults(d.Search)
+      : $results.innerHTML = `<p>${d.Error}</p>`)
+    .catch(err => {
+      console.error(err);
+      Swal.fire('Error', 'No se pudo buscar películas', 'error');
     });
 }
 
-// Agregar tarea
-const formTarea = document.getElementById('formTarea');
-formTarea.addEventListener('submit', e => {
-    e.preventDefault();
-    const titulo = document.getElementById('titulo').value.trim();
-    const descripcion = document.getElementById('descripcion').value.trim();
-    const prioridad = document.getElementById('prioridad').value;
+function renderResults(list) {
+  $results.innerHTML = '';
+  list.forEach(m => $results.appendChild(movieCard(m)));
+}
 
-    if (!titulo) {
-        Swal.fire("Error", "El titulo no puede estar vacio", "warning");
-        return;
-    }
+function movieCard(movie) {
+  const col = document.createElement('div');
+  col.className = 'col-md-4 mb-4';
+  col.innerHTML = `
+    <div class="card h-100">
+      <img src="${movie.Poster !== 'N/A'
+        ? movie.Poster
+        : 'https://via.placeholder.com/300x450?text=Sin+Imagen'}"
+        class="card-img-top" alt="${movie.Title}">
+      <div class="card-body">
+        <h5 class="card-title">${movie.Title} (${movie.Year})</h5>
+        <button class="btn btn-info  btn-sm">Ver más</button>
+        <button class="btn btn-warning btn-sm">❤️ Favorito</button>
+      </div>
+    </div>`;
+  // eventos de los botones
+  const [btnMore, btnFav] = col.querySelectorAll('button');
+  btnMore.addEventListener('click', () => showDetails(movie.imdbID));
+  btnFav .addEventListener('click', () => addToFavorites(movie.imdbID));
+  return col;
+}
 
-    const nueva = new Tarea(titulo, descripcion, prioridad);
-    tareas.push(nueva);
-    LS.guardar('tareas', tareas);
-    renderTareas();
-    Swal.fire({
-        icon: 'success',
-        title: 'Tarea Agregada',
-        timer: 1200,
-        showConfirmButton: false
+/* ============== DETALLES & FAVORITOS ================ */
+function showDetails(id) {
+  fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`)
+    .then(r => r.json())
+    .then(m => Swal.fire({
+      title : `${m.Title} (${m.Year})`,
+      text  : m.Plot,
+      imageUrl: m.Poster,
+      imageHeight: 400,
+      confirmButtonText: 'Cerrar'
+    }));
+}
+
+function addToFavorites(id) {
+  fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`)
+    .then(r => r.json())
+    .then(m => {
+      if (favorites.some(f => f.imdbID === m.imdbID)) {
+        return Swal.fire('Ya está en favoritos');
+      }
+      favorites.push({ imdbID: m.imdbID, Title: m.Title, Year: m.Year, Poster: m.Poster });
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      Swal.fire('Guardado en favoritos ✅');
     });
-    formTarea.reset();
-});
-
-listaTareas.addEventListener('click', e => {
-    const li = e.target.closest('li');
-    if (!li) return;
-    const id = parseInt(li.dataset.id);
-    if (e.target.classList.contains('completar')) {
-        const tarea = tareas.find(t => t.id === id);
-        if (tarea) {
-            tarea.completada = !tarea.completada;
-            LS.guardar('tareas', tareas);
-            renderTareas();
-        }
-    }
-    if (e.target.classList.contains('eliminar')) {
-        const tarea = tareas.find(t => t.id === id);
-        Swal.fire({
-            title: '¿Eliminar Tarea?',
-            text: tarea ? tarea.titulo : '',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Si, Eliminar',
-            cancelButtonText: 'Cancela'
-        }).then(result => {
-            if (result.IsConfirmed) {
-                const tarea = tareas.filter(t => t.id === id);
-                LS.guardar('tareas', tareas);
-                renderTareas();
-                Swal.fire('Eliminada', 'La tarea fue eliminada', 'success');
-            }
-        })
-    }
-});
-
-
-// ------- PRODUCTOS --------
-const contenedorProductos = document.getElementById('productos');
-
-const renderizarProductos = () => {
-    contenedorProductos.innerHTML = '';
-    productos.forEach(prod => {
-        const col = document.createElement('div');
-        col.className = 'col-md-4';
-        col.innerHTML = `
-            <div class="card h-100">
-                <img src="${prod.image}" alt="${prod.title}" class="card-img-top p-3" style=" height: 200px; object-fit: contain;">
-                <div class="card-body d-flex flex-column">
-                    <p class="card-title">${prod.title}</p>
-                    <p class="card-text fw-bold mb-4">${prod.price}</p>
-                    <button class="btn btn-primary mt-auto" data-id="${prod.id}">Agregar</button>
-                </div>
-            </div>
-        `;
-        contenedorProductos.appendChild(col);
-    })
-};
-
-const cargarProductos = async () => {
-    try {
-        const res = await fetch('https://fakestoreapi.com/products');
-        const data = await res.json();
-        productos = data.map(p => new Producto(p));
-        renderizarProductos();
-    } catch (err) {
-        console.error(err);
-        Swal.fire('Error', 'No se pudieron obtener los productos', 'error');
-    }
 }
 
-// Agregar al carrito
-contenedorProductos.addEventListener('click', e => {
-    if (e.target.tagName === 'BUTTON') {
-        const id = parseInt(e.target.dataset.id);
-        const prod = productos.find(p => p.id === id);
-        if (!prod) return;
-        const existente = carrito.find(i => i.id === id);
-        if (existente) {
-            existente.cantidad += 1;
-        } else {
-            carrito.push({ ...prod, cantidad: 1 })
-        }
-        LS.guardar('carrito', carrito);
-        renderCarrito();
-        Swal.fire({
-            icon: 'success',
-            title: 'Producto agregado',
-            text: prod.title,
-            timer: 2000,
-            showConfirmButton: false
-        });
-    }
-})
-
-// ------CARRITO --------
-const listaCarrito = document.getElementById('carrito');
-const vaciarBtn = document.getElementById('vaciarCarrito');
-
-const renderCarrito = () => {
-    listaCarrito.innerHTML = '';
-    carrito.forEach(item => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        li.innerHTML = `${item.title} x ${item.cantidad}
-            <span class="badge bg-primary rounded-pill">$${(item.price * item.cantidad).toFixed(2)}</span>
-        `;
-        listaCarrito.appendChild(li);
-    })
+function renderFavorites() {
+  $results.innerHTML = '';
+  if (!favorites.length) return $results.insertAdjacentHTML('afterbegin','<p>No hay favoritos.</p>');
+  favorites.forEach(f => {
+    const card = movieCard(f);
+    // cambio botón a "quitar"
+    const btnFav = card.querySelector('button.btn-warning');
+    btnFav.className = 'btn btn-danger btn-sm';
+    btnFav.textContent = '🗑️ Quitar';
+    btnFav.onclick = () => { removeFavorite(f.imdbID); };
+    $results.appendChild(card);
+  });
 }
 
-vaciarBtn.addEventListener('click', () => {
-    if (!carrito.length) return;
-    Swal.fire({
-        title: '¿Vaciar carrito?',
-        text: 'Se eliminarán todos los productos',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, vaciar',
-        cancelButtonText: 'No'
-    }).then(result => {
-        if (result.isConfirmed) {
-            carrito = [];
-            LS.guardar('carrito', carrito);
-            renderCarrito();
-            Swal.fire('Carrito vaciado', '', 'success');
-        }
-    });
-});
-
-// ----- HORA SERVIDOR ------
-const actualizarHora = async () => {
-    try {
-        const res = await fetch('/hora');
-        const { hora } = await res.json();
-        document.getElementById('horaServidor').textContent = hora;
-    } catch (err) {
-        console.error('Error, no se puede obtener la hora del Servidor ', err)
-    }
+function removeFavorite(id) {
+  favorites = favorites.filter(f => f.imdbID !== id);
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+  renderFavorites();
 }
 
-
-// ------ INIT -----------
-renderTareas();
-actualizarHora();
-cargarProductos();
-renderCarrito();
-setInterval(actualizarHora, 1000);
-
-const year = new Date().getFullYear();
-const yearElement = document.getElementById('year');
-if (yearElement) {
-    yearElement.innerHTML = year;
+/* ================== DARK MODE ======================= */
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
+function applyDarkMode() {
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+  }
+}
+
+/* =================  HISTORIAL  ====================== */
+function saveToHistory(query) {
+  let h = JSON.parse(localStorage.getItem('history')) || [];
+  if (h.includes(query)) return;
+  h.unshift(query);
+  h = h.slice(0, 5);
+  localStorage.setItem('history', JSON.stringify(h));
+  renderHistory();
+}
+
+function renderHistory() {
+  const h = JSON.parse(localStorage.getItem('history')) || [];
+  $history.innerHTML = '';
+  h.forEach(q => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-sm btn-outline-secondary me-2 mb-2';
+    btn.textContent = q;
+    btn.onclick = () => {
+      currentSearch = q;
+      currentPage   = 1;
+      fetchMovies(q, currentPage);
+    };
+    $history.appendChild(btn);
+  });
+}
+
+/* ================  PÁGINAS  ========================= */
+function nextPage() { currentPage++; fetchMovies(currentSearch, currentPage); }
+function prevPage() { if (currentPage > 1) { currentPage--; fetchMovies(currentSearch, currentPage); } }

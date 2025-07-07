@@ -1,95 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce Santino</title>
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Santino Movies</title>
+
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 
-<body>
-    <div class="wrapper">
-        <main class="container py-4 ">
-            <h1 class="text-center">MiniGestor de Tareas + Tienda 🛒</h1>
-            <p class="text-end small">Hora del servidor: <span id="horaServidor">--:--:--</span></p>
+<body class="bg-light text-dark">
+    <div class="container my-4">
+        <h1 class="text-center mb-4">🎬 Buscador de Películas</h1>
 
-            <ul class="nav nav-tabs mt-3" id="tabs">
-                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tareas">📋 Tareas</a></li>
-                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tienda">🛍️ Tienda</a></li>
-            </ul>
-
-            <div class="tab-content mt-3">
-                <!-- TAB TAREAS -->
-                <div class="tab-pane fade show active" id="tareas">
-                    <form id="formTarea" class="mb-3">
-                        <input type="text" id="titulo" class="form-control mb-2" placeholder="Título">
-                        <textarea id="descripcion" class="form-control mb-2" placeholder="Descripción"></textarea>
-                        <select id="prioridad" class="form-select mb-2">
-                            <option value="Alta">Alta</option>
-                            <option value="Media">Media</option>
-                            <option value="Baja">Baja</option>
-                        </select>
-                        <button class="btn btn-success">Agregar tarea</button>
-                    </form>
-                    <ul id="listaTareas" class="list-group"></ul>
-                </div>
-
-                <!-- TAB TIENDA -->
-                <div class="tab-pane fade" id="tienda">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h3 class="m-0">Productos</h3>
-                        <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#modalCarrito">
-                            🛒 Ver carrito
-                        </a>
-                    </div>
-                    <div class="row" id="productos"></div>
-                </div>
-            </div>
-        </main>
-
-        <!-- MODAL CARRITO -->
-        <div class="modal fade" id="modalCarrito" tabindex="-1" aria-labelledby="modalCarritoLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">🛒 Carrito de compras</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="list-group" id="carrito"></ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="vaciarCarrito" class="btn btn-danger">Vaciar carrito</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <input id="searchInput" class="form-control flex-grow-1" placeholder="Escribí el título…">
+            <button id="btnSearch" class="btn btn-primary">Buscar</button>
+            <button id="btnDark" class="btn btn-outline-dark">🌓</button>
+            <button id="btnFavorites" class="btn btn-warning">⭐ Ver Favoritos</button>
         </div>
 
-        <footer id="footer">
-            <p>
-                Aplication Ecommerce | &copy;
-                - Copyright by
-                Santino Buttasoni &#xae; - <span id="year"></span> All right reserved
-            </p>
-            <p>
-                <a href="#" target="_blank" rel="noopener noreferrer">
-                    Santino <img src="/img/github.png" alt="Santino" class="github"> Developer </a>
-            </p>
-            <p>
-                <a href="#">See Terms and Conditions</a>
-            </p>
-        </footer>
+        <div id="history" class="mb-3"></div>
+        <div id="results" class="row"></div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button id="btnPrev" class="btn btn-outline-secondary">⬅️ Anterior</button>
+            <button id="btnNext" class="btn btn-outline-secondary">Siguiente ➡️</button>
+        </div>
+    </div>
+
+
+    <footer id="footer">
+        <p>
+            Aplication Ecommerce | &copy;
+            - Copyright by
+            Santino Buttasoni &#xae; - <span id="year"></span> All right reserved
+        </p>
+        <p>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+                Santino <img src="/img/github.png" alt="Santino" class="github"> Developer </a>
+        </p>
+        <p>
+            <a href="#">See Terms and Conditions</a>
+        </p>
+    </footer>
 
     </div>
 
 
-    <script type="module" src="js/index.js"></script>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- ahora sigue siendo módulo -->
+    <script type="module" src="/js/index.js"></script>
 </body>
 
 </html>

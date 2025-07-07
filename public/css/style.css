@@ -8,28 +8,21 @@ html, body{
     padding: 0;
 }
 
-.wrapper{
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #f1f1f1 !important;
 }
 
-main{
-    flex: 1;
+.dark-mode .card {
+  background-color: #1e1e1e;
+  color: white;
 }
 
-.tarea-completada{
-    text-decoration: line-through;
-    color: #f6ff00;
-    background-color: #545454;
-    font-weight: bold;
+.card img {
+  height: 300px;
+  object-fit: contain;
 }
 
-#horaServidor{
-    font-size: 1.1rem;
-    margin-left: .5rem;
-    font-weight: bold;
-}
 
 #footer{
     background-color: #1d1d1d;
