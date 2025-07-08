@@ -1,17 +1,17 @@
-// app.js
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
 app.use('/sweetalert2', express.static(path.join(__dirname, 'node_modules/sweetalert2/dist')));
-
-// endpoint demo para la hora
-app.get('/hora', (_, res) => {
-    res.json({ hora: new Date().toLocaleTimeString('es-AR') });
-});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
