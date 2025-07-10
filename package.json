@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Pequeño ecommerce para traer productos de fakestore",
   "main": "app.js",
-  "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,7 +23,9 @@
   "homepage": "https://github.com/Drako01/santino#readme",
   "dependencies": {
     "bootstrap": "^5.3.7",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
     "sweetalert2": "^11.22.2"
   },
   "devDependencies": {
