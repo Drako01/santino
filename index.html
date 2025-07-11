@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+
+    <!-- GAPI para Google Sheets API -->
+    <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
+
+    <!-- GIS: Google Identity Services para OAuth -->
+    <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()" async defer></script>
+
+</head>
+
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-4">
+            <h1 class="display-5">📋 Formulario con Google Sheets</h1>
+        </div>
+
+        <div id="signin" class="text-center mb-4">
+            <button class="btn btn-outline-primary btn-lg" onclick="handleAuthClick()">
+                🔐 Iniciar Sesión con Google
+            </button>
+        </div>
+
+        <div id="formCard" class="card shadow hidden">
+            <div class="card-body">
+                <form id="myForm" onsubmit="submitForm(event)">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" id="nombre" class="form-control" placeholder="Tu nombre" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="tu@email.com" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="mensaje" class="form-label">Mensaje</label>
+                        <textarea id="mensaje" class="form-control" placeholder="Tu mensaje..." rows="4"
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">📤 Enviar</button>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- Tabla de los datos cargados -->
+        <div class="mt-5 hidden" id="tablaContainer">
+            <h3 class="text-center mb-3">📄 Mensajes Guardados</h3>
+            <div class="table-responsive">
+                <table class="table table-borderer table-hover align-middle" id="dataTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Mensaje</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Boton para limpiar la Sheet -->
+        <div class="text-center mt-4 hidden" id="clearContainer">
+            <button class="btn btn-danger" onclick="borraTodo()">
+                🗑 Borrar todos los datos de la Sheet
+            </button>
+        </div>
+
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>
