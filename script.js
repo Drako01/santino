@@ -1,7 +1,7 @@
-const CLIENT_ID = "884946874812-baqnpk15nensulfifpn1u8j0aoi0cdmk.apps.googleusercontent.com";
-const API_KEY = "AIzaSyBCuDfPntIswWYpQyzReL_UxHPNsymgQSg";
+const CLIENT_ID = "884946874812-baqnpk15nensulfifpn1u8j0asoi0cdmk.apps.googleusercontent.com";
+const API_KEY = "AIzaSyBCusdfntIswWYpQyzRessL_UxHPNsymgQSg";
 
-const SHEET_ID = "1jCYO_N1oqSJffBl9VhERz2Qu5FdSADxKG04aLervaHk";
+const SHEET_ID = "1jCYO_N1oqsdffBl9VhERz2Qu5FdSADxKG04saLervaHk";
 const SHEET_NAME = 'Hoja 1';
 
 const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
