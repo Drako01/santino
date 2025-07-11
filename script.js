@@ -67,6 +67,7 @@ function handleAuthClick() {
         document.getElementById('clearContainer').classList.remove('hidden');
 
         cargarDatosDesdeSheets();
+        iniciarActualizacionAutomatica();
     };
 
     tokenClient.requestAccessToken({ prompt: 'consent' });
@@ -145,3 +146,11 @@ function borrarTodo() {
         console.error("Error al intentar borrar los datos. ", err)
     });
 }
+
+function iniciarActualizacionAutomatica() {
+    setInterval(() => {
+        cargarDatosDesdeSheets();
+        console.log("Datos actualizados desde Sheets.!")
+    }, 1000)
+}
+
