@@ -1,59 +1,34 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Santino Movies</title>
-
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/sweetalert2/sweetalert2.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="sweetalert2/sweetalert2.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="bg-light text-dark">
-    <div class="container my-4">
-        <h1 class="text-center mb-4">🎬 Buscador de Películas</h1>
-
-        <div class="d-flex flex-wrap gap-2 mb-3">
-            <input id="searchInput" class="form-control flex-grow-1" placeholder="Escribí el título…">
-            <button id="btnSearch" class="btn btn-primary">Buscar</button>
-            <button id="btnDark" class="btn btn-outline-dark">🌓</button>
-            <button id="btnFavorites" class="btn btn-warning">⭐ Ver Favoritos</button>
+<body>
+    <div class="container p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>🎥 Studio Ghilbli Films</h1>
+            <div>
+                <button id="btn-favorites" class="btn btn-warning me-2">⭐ Favoritos</button>
+                <button id="toggle-dark-mode" class="btn btn-secondary">Modo Oscuro</button>
+            </div>
         </div>
 
-        <div id="history" class="mb-3"></div>
-        <div id="results" class="row"></div>
-
-        <div class="d-flex justify-content-between mt-4">
-            <button id="btnPrev" class="btn btn-outline-secondary">⬅️ Anterior</button>
-            <button id="btnNext" class="btn btn-outline-secondary">Siguiente ➡️</button>
+        <div class="mb-3">
+            <input type="text" id="search-input" class="form-control" placeholder="Buscar por titulo...">
         </div>
+        <div id="results" class="row g-3"></div>
     </div>
 
-
-    <footer id="footer">
-        <p>
-            Aplication Ecommerce | &copy;
-            - Copyright by
-            Santino Buttasoni &#xae; - <span id="year"></span> All right reserved
-        </p>
-        <p>
-            <a href="#" target="_blank" rel="noopener noreferrer">
-                Santino <img src="/img/github.png" alt="Santino" class="github"> Developer </a>
-        </p>
-        <p>
-            <a href="#">See Terms and Conditions</a>
-        </p>
-    </footer>
-
-    </div>
-
-
-    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/sweetalert2/sweetalert2.all.min.js"></script>
-    <!-- ahora sigue siendo módulo -->
-    <script type="module" src="/js/index.js"></script>
+    <script src="sweetalert2/sweetalert2.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/index.js"></script>
 </body>
 
 </html>

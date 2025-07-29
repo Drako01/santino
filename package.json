@@ -1,10 +1,19 @@
 {
-  "name": "santino_ecommerce",
+  "name": "peliculas_santino",
   "version": "1.0.0",
-  "description": "Pequeño ecommerce para traer productos de fakestore",
-  "main": "app.js",
+  "description": "Aplicacion para buscar peliculas en una API y manejar Modo Oscuro",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap": "^5.3.7",
+    "sweetalert2": "^11.22.2",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon server/app.js",
+    "start": "node server/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -12,21 +21,14 @@
     "url": "git+https://github.com/Drako01/santino.git"
   },
   "keywords": [
-    "Ecommerce",
-    "Productos"
+    "Peliculas",
+    "Modo",
+    "Oscuro"
   ],
-  "author": "Alejandro Di Stefano",
+  "author": "Santino Buttazzoni",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Drako01/santino/issues"
   },
-  "homepage": "https://github.com/Drako01/santino#readme",
-  "dependencies": {
-    "bootstrap": "^5.3.7",
-    "express": "^5.1.0",
-    "sweetalert2": "^11.22.2"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
-  }
+  "homepage": "https://github.com/Drako01/santino#readme"
 }
